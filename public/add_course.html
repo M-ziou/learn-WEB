@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Course</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #add8e6;
+            text-align: center;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            max-width: 400px;
+        }
+        input, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Course</h1>
+    <form id="courseForm">
+        <label for="title">Course Title:</label>
+        <input type="text" id="title" required>
+        
+        <label for="instructor">Instructor Name:</label>
+        <input type="text" id="instructor" required>
+        
+        <label for="description">Course Description:</label>
+        <textarea id="description" required></textarea>
+        
+        <label for="pdfLink">PDF Link:</label>
+        <input type="text" id="pdfLink" required>
+        
+        <label for="videoLink">Video Link:</label>
+        <input type="text" id="videoLink" required>
+        
+        <button type="submit">Add Course</button>
+    </form>
+
+    <script>
+        document.getElementById('courseForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const instructor = document.getElementById('instructor').value;
+            const description = document.getElementById('description').value;
+            const pdfLink = document.getElementById('pdfLink').value;
+            const videoLink = document.getElementById('videoLink').value;
+
+            const response = await fetch('/add_course', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, instructor, description, content: [{ pdfLink, videoLink }] })
+            });
+
+            if (response.ok) {
+                alert('Course added successfully!');
+                window.location.href = 'instructor_main.html'; // Redirect to instructor main page
+            } else {
+                const errorText = await response.text();
+                alert(`Error adding course: ${errorText}`);
+            }
+        };
+    </script>
+</body>
+</html>

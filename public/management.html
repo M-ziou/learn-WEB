@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #add8e6;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #userList {
+            list-style-type: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin: 15px 0;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .delete-button {
+            background-color: #e74c3c; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            padding: 10px 15px; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 14px;
+        }
+
+        .delete-button:hover {
+            background-color: #c0392b; 
+            transform: translateY(-2px);
+        }
+
+        .no-users {
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <h1>User Management</h1>
+    <ul id="userList"></ul>
+    <div class="no-users" id="noUsersMessage" style="display: none;">No users found.</div>
+
+    <script>
+        async function fetchUsers() {
+            const response = await fetch('/get_users');
+            const users = await response.json();
+            const userList = document.getElementById('userList');
+            const noUsersMessage = document.getElementById('noUsersMessage');
+
+            if (users.length === 0) {
+                noUsersMessage.style.display = 'block';
+                return;
+            }
+
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.innerHTML = `${user.username} <button class="delete-button" onclick="deleteUser(${user.id})">Delete</button>`;
+                userList.appendChild(li);
+            });
+        }
+
+        async function deleteUser(userId) {
+            const response = await fetch(`/delete_user/${userId}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            alert(result.message);
+            location.reload(); // Reload to see the updated user list
+        }
+
+        // Fetch users on page load
+        fetchUsers();
+    </script>
+</body>
+</html>

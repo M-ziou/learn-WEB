@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Information</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('path/to/your/new/background/image.jpg'); /* Update this with the new image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: auto; /* Allow scrolling if content overflows */
+        }
+        #container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+        #description {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            overflow-wrap: break-word; /* Prevent overflow of text */
+        }
+        h1 {
+            text-align: center;
+            margin: 10px 0;
+        }
+        h2 {
+            margin: 10px 0;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .instructorLabel {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        #instructorName {
+            background-color: rgba(255, 255, 0, 0.7);
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            overflow-wrap: break-word; /* Prevent overflow of text */
+        }
+        li:hover {
+            background-color: rgba(200, 200, 200, 0.8);
+        }
+        button {
+            background-color: #4A90E2; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%; /* Full width buttons */
+            margin-bottom: 10px; /* Space between buttons */
+        }
+        button:hover {
+            background-color: #357ABD; 
+            transform: translateY(-2px);
+        }
+        #content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            overflow-wrap: break-word; /* Prevent overflow of text */
+        }
+        #reportForm {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        textarea {
+            resize: vertical; /* Allow vertical resizing */
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <div id="container">
+        <h1 id="courseTitle">Course Title</h1>
+        <p><span class="instructorLabel">Instructor:</span> <span id="instructorName">Instructor Name</span></p>
+        
+        <div id="description">
+            <h2>Course Description</h2>
+            <p id="courseDescription"></p>
+        </div>
+
+        <button id="enrollButton">Enroll</button>
+        <button id="reportButton">Report</button>
+        <button id="deleteCourseButton" style="display: none;">Delete Course</button>
+
+        <div id="reportForm">
+            <h2>Submit a Report</h2>
+            <form id="reportSubmission">
+                <label for="userName">Your Name:</label>
+                <input type="text" id="userName" required>
+                <label for="reportDescription">Description:</label>
+                <textarea id="reportDescription" required></textarea>
+                <label for="reportType">Choose recipient:</label>
+                <select id="reportType">
+                    <option value="admin">Admin</option>
+                    <option value="instructor">Instructor</option>
+                </select>
+                <button type="submit">Submit Report</button>
+            </form>
+        </div>
+
+        <div id="content">
+            <h2>Course Content</h2>
+            <ul id="courseLinks">
+                <!-- Links will be populated here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const courses = {
+            1: {
+                title: "Introduction to Computer Science",
+                instructor: "Dr. Jane Smith",
+                content: [
+                    { name: "Download Curriculum Guide (PDF)", link: "https://code.org/files/CSF_CoursesA-F_Curriculum_Guide.pdf" },
+                    { name: "Watch Video", link: "https://www.youtube.com/watch?v=zOjov-2OZ0E" }
+                ],
+                description: "This course provides an introduction to the fundamental principles of computer science, including programming, data structures, and algorithms."
+            },
+            2: {
+                title: "Data Structures and Algorithms",
+                instructor: "Prof. John Doe",
+                content: [
+                    { name: "Download Text (PDF)", link: "https://www.professores.uff.br/diomarcesarlobao/wp-content/uploads/sites/85/2017/09/6Sam_Text.pdf" },
+                    { name: "Watch Video", link: "https://www.youtube.com/watch?v=BBpAmxU_NQo" }
+                ],
+                description: "This course covers the essential data structures and algorithms used in computer science."
+            },
+            3: {
+                title: "Web Development Fundamentals",
+                instructor: "Dr. Emily Davis",
+                content: [
+                    { name: "Download Web Development Guide (PDF)", link: "https://api.pageplace.de/preview/DT0400.9781292075556_A24590354/preview-9781292075556_A24590354.pdf" },
+                    { name: "Watch Introduction to Web Development Video", link: "https://www.youtube.com/watch?v=UB1O30fR-EE" }
+                ],
+                description: "This course introduces the basics of web development, including HTML, CSS, and JavaScript."
+            },
+            4: {
+                title: "Database Management Systems",
+                instructor: "Dr. Alice Johnson",
+                content: [
+                    { name: "Download DBMS Guide (PDF)", link: "https://example.com/dbms_guide.pdf" },
+                    { name: "Watch DBMS Overview Video", link: "https://www.youtube.com/watch?v=dbms_intro" }
+                ],
+                description: "This course covers the fundamentals of database management systems."
+            },
+            5: {
+                title: "Machine Learning Concepts",
+                instructor: "Prof. Ada Lovelace",
+                content: [
+                    { name: "Download Machine Learning Notes (PDF)", link: "https://courses.edx.org/asset-v1:ColumbiaX+CSMM.101x+1T2017+type@asset+block@AI_edx_ml_5.1intro.pdf" },
+                    { name: "Watch Machine Learning Video", link: "https://www.youtube.com/watch?v=Gv9_4yMHFhI" }
+                ],
+                description: "This course covers the basics of machine learning and its applications."
+            },
+            6: {
+                title: "Artificial Intelligence Basics",
+                instructor: "Dr. Alan Turing",
+                content: [
+                    { name: "Download AI Book (PDF)", link: "https://www.dcpehvpm.org/E-Content/BCA/BCA-III/artificial_intelligence_tutorial.pdf" },
+                    { name: "Watch AI Introduction Video", link: "https://www.youtube.com/watch?v=2ePf9rue1Ao" }
+                ],
+                description: "This course introduces the fundamental concepts of artificial intelligence."
+            },
+            7: {
+                title: "Cybersecurity Essentials",
+                instructor: "Dr. Kevin Mitnick",
+                content: [
+                    { name: "Download Cybersecurity Fundamentals Guide (PDF)", link: "https://mrcet.com/downloads/digital_notes/CSE/II%20Year/CS/CYBER%20SECURITY%20ESSENTIALS%20Digital%20Notes.pdf" },
+                    { name: "Watch Cybersecurity Overview Video", link: "https://www.youtube.com/watch?v=2GvJg1m0hD4" }
+                ],
+                description: "This course covers essential concepts of cybersecurity and threat management."
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('course');
+
+        // Fetching course details dynamically
+        async function fetchCourseDetails() {
+            const response = await fetch(`/get_course/${courseId}`);
+            if (response.ok) {
+                const { course, content } = await response.json();
+                document.getElementById('courseTitle').innerText = course.title;
+                document.getElementById('instructorName').innerText = course.instructor;
+                document.getElementById('courseDescription').innerText = course.description;
+
+                const courseLinks = document.getElementById('courseLinks');
+                content.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.pdf_link}" target="_blank">PDF: ${item.pdf_link}</a> <a href="${item.video_link}" target="_blank">Video: ${item.video_link}</a>`;
+                    courseLinks.appendChild(li);
+                });
+            } else {
+                if (courses[courseId]) {
+                    const course = courses[courseId];
+                    document.getElementById('courseTitle').innerText = course.title;
+                    document.getElementById('instructorName').innerText = course.instructor;
+                    document.getElementById('courseDescription').innerText = course.description;
+
+                    const courseLinks = document.getElementById('courseLinks');
+                    course.content.forEach(item => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="${item.link}" target="_blank">${item.name}</a>`;
+                        courseLinks.appendChild(li);
+                    });
+                } else {
+                    document.getElementById('courseTitle').innerText = "Course Not Found";
+                    document.getElementById('instructorName').innerText = "";
+                    document.getElementById('courseDescription').innerText = "Sorry, the course you are looking for does not exist.";
+                }
+            }
+
+            // Check user role and display delete button if instructor
+            const userRole = '<%= userRole %>'; // Replace this with your method of fetching user role
+            if (userRole === 'instructor') {
+                document.getElementById('deleteCourseButton').style.display = 'block';
+            }
+        }
+
+        fetchCourseDetails();
+
+        document.getElementById('enrollButton').onclick = function() {
+            document.getElementById('content').style.display = 'block'; // Show course content
+            this.style.display = 'none'; // Hide the enroll button
+        };
+
+        document.getElementById('reportButton').onclick = function() {
+            document.getElementById('reportForm').style.display = 'block'; // Show report form
+        };
+
+        document.getElementById('reportSubmission').onsubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('userName').value;
+            const desc = document.getElementById('reportDescription').value;
+            const recipient = document.getElementById('reportType').value;
+
+            const response = await fetch('/submit_report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, desc, recipient }),
+            });
+
+            if (response.ok) {
+                alert('Report submitted successfully!');
+                document.getElementById('reportForm').style.display = 'none';
+            } else {
+                const errorText = await response.text();
+                alert(`Error submitting report: ${errorText}`);
+            }
+        };
+
+        document.getElementById('deleteCourseButton').onclick = async function() {
+            const confirmation = confirm("Are you sure you want to delete this course?");
+            if (confirmation) {
+                const response = await fetch(`/delete_course/${courseId}`, { method: 'DELETE' });
+                if (response.ok) {
+                    alert('Course deleted successfully!');
+                    window.location.href = 'instructor_main.html'; // Redirect to the instructor main page
+                } else {
+                    alert('Error deleting course.');
+                }
+            }
+        };
+    </script>
+</body>
+</html>

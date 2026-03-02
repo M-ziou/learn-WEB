@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #add8e6;
+            margin: 0;
+            padding: 20px;
+            color: #343a40;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 40px;
+        }
+
+        .report-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #reportList {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .report-item {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .report-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .report-item h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #495057;
+        }
+
+        .report-item p {
+            margin: 5px 0;
+            color: #6c757d;
+        }
+
+        .report-item span {
+            font-weight: bold;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reports</h1>
+    <div class="report-container">
+        <ul id="reportList"></ul>
+    </div>
+
+    <script>
+        async function fetchReports() {
+            const response = await fetch('/get_reports');
+            const reports = await response.json();
+            const reportList = document.getElementById('reportList');
+
+            reports.forEach(report => {
+                const li = document.createElement('li');
+                li.className = 'report-item';
+                li.innerHTML = `
+                    <h3>${report.name}</h3>
+                    <p>${report.description}</p>
+                    <p><span>For:</span> ${report.recipient}</p>
+                `;
+                reportList.appendChild(li);
+            });
+        }
+
+        // Fetch reports on page load
+        fetchReports();
+    </script>
+</body>
+</html>

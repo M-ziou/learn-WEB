@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="fade-in">
+<h1>Login</h1>
+<div class="form-container">
+    <div id="loginForm">
+        <!-- The appropriate form will be injected here based on the role -->
+    </div>
+</div>
+<p>Don't have an account? <a href="/register">Register here</a>.</p>
+<div id="message" class="message"></div>
+<script>
+    const role = window.location.pathname.split('/').pop(); // Get the last part of the URL
+    const loginForm = document.getElementById('loginForm');
+    let formHtml = '';
+    if (role === 'user') {
+        formHtml = `
+            <form action="/login/user" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+                <button type="submit">Login as User</button>
+            </form>`;
+    } else if (role === 'instructor') {
+        formHtml = `
+            <form action="/login/instructor" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+                <button type="submit">Login as Instructor</button>
+            </form>`;
+    } else if (role === 'admin') {
+        formHtml = `
+            <form action="/login/admin" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+                <button type="submit">Login as Admin</button>
+            </form>`;
+    } else if (role === 'guest') {
+        formHtml = `
+            <form action="/login/guest" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+                <button type="submit">Login as Guest</button>
+            </form>`;
+    } else {
+        formHtml = `<p>Please select a valid role to log in.</p>`;
+    }
+    loginForm.innerHTML = formHtml;
+    // Display messages after login
+    const messageDiv = document.getElementById('message');
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const message = urlParams.get('message');
+    if (status && message) {
+        messageDiv.classList.add(status === 'success' ? 'success' : 'error');
+        messageDiv.textContent = message;
+        messageDiv.style.display = 'block';
+    }
+</script>
+<style>
+    body {
+        background-color: #add8e6;
+        text-align: center;
+    }
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px auto;
+        max-width: 400px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    form {
+        margin: 20px 0;
+        width: 100%;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        text-align: left;
+    }
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button {
+        width: 100%;
+        background-color: #4A90E2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    button:hover {
+        background-color: #357ABD;
+        transform: translateY(-2px);
+    }
+    p {
+        margin-top: 20px;
+    }
+    .message {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+    }
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!-- header.html -->
+<div class="header">
+    <div class="header-content">
+        <h2>Welcome, <span id="username"></span>!</h2>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<style>
+.header {
+    background-color: #4A90E2;
+    color: white;
+    width: 100%;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.header button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.header button:hover {
+    background-color: #c82333;
+}
+</style>
+
+<script>
+function logout() {
+    // Clear session storage for username
+    sessionStorage.removeItem('username'); 
+    // Redirect to the main page
+    window.location.href = '/'; // Redirect to index.html
+}
+
+// Set the username from session storage
+document.getElementById('username').innerText = sessionStorage.getItem('username') || 'User';
+</script>

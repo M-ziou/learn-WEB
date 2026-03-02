@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Course Content</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-color: #add8e6;">
+    <h1>Manage Course Content</h1>
+    <form id="contentForm">
+        <input type="hidden" id="courseId">
+        <label for="pdfLink">PDF Link:</label>
+        <input type="text" id="pdfLink" required>
+        <label for="videoLink">Video Link:</label>
+        <input type="text" id="videoLink" required>
+        <button type="submit">Save Links</button>
+    </form>
+    
+    <h2>Existing Links</h2>
+    <ul id="existingLinks"></ul>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('course');
+        document.getElementById('courseId').value = courseId;
+
+        async function fetchCourseContent() {
+            const response = await fetch(`/get_course_content/${courseId}`);
+            const content = await response.json();
+            const existingLinks = document.getElementById('existingLinks');
+
+            content.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    PDF: <a href="${item.pdfLink}" target="_blank">${item.pdfLink}</a>
+                    Video: <a href="${item.videoLink}" target="_blank">${item.videoLink}</a>
+                    <button onclick="deleteLink(${item.id})">Delete</button>
+                `;
+                existingLinks.appendChild(li);
+            });
+        }
+
+        document.getElementById('contentForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const pdfLink = document.getElementById('pdfLink').value;
+            const videoLink = document.getElementById('videoLink').value;
+
+            await fetch(`/add_content/${courseId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pdfLink, videoLink })
+            });
+            alert('Links saved successfully!');
+            location.reload(); // Refresh to show new links
+        };
+
+        async function deleteLink(id) {
+            await fetch(`/delete_content/${id}`, { method: 'DELETE' });
+            alert('Link deleted successfully!');
+            location.reload(); // Refresh to show updated links
+        }
+
+        fetchCourseContent();
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Courses</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #add8e6;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        #courses {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .course {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            width: 250px; /* Set a fixed width for better control */
+            max-width: 90%; /* Allow responsiveness */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s; /* Smooth transition for hover effect */
+        }
+        .course:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #357ABD;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Courses</h1>
+    <div id="courses"></div>
+
+    <button class="back-button" onclick="location.href='user_main.html'">Back to User Main Page</button>
+
+    <script>
+        async function fetchCourses() {
+            const response = await fetch('/get_courses');
+            const courses = await response.json();
+            const coursesContainer = document.getElementById('courses');
+
+            // Clear existing courses
+            coursesContainer.innerHTML = '';
+
+            courses.forEach(course => {
+                const courseDiv = document.createElement('div');
+                courseDiv.className = 'course';
+                courseDiv.onclick = () => location.href = `course_info.html?course=${course.id}`;
+                courseDiv.innerText = course.title;
+                coursesContainer.appendChild(courseDiv);
+            });
+        }
+
+        // Fetch courses on page load
+        fetchCourses();
+    </script>
+</body>
+</html>

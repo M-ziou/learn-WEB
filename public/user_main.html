@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Main Page</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #add8e6;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Logout Icon Styles */
+        .logout-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            background: url('https://static-00.iconduck.com/assets.00/logout-icon-2048x2048-libuexip.png') no-repeat center center;
+            background-size: contain;
+            border: none;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #212529;
+            margin: 20px 0;
+        }
+
+        /* Course Cards */
+        #courses {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .course {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .course:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        /* Buttons Section */
+        .manage-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .manage-buttons button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .manage-buttons button:hover {
+            background-color: #357ABD;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .course {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .manage-buttons button {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logout Icon -->
+    <button class="logout-icon" onclick="logout()" aria-label="Logout"></button>
+
+    <h1>Available Courses</h1>
+
+    <!-- Courses Section -->
+    <div id="courses">
+        <div class="course" onclick="location.href='course_info.html?course=1'">
+            <div class="course-title">Introduction to Computer Science</div>
+        </div>
+        <div class="course" onclick="location.href='course_info.html?course=2'">
+            <div class="course-title">Data Structures and Algorithms</div>
+        </div>
+        <div class="course" onclick="location.href='course_info.html?course=4'">
+            <div class="course-title">Database Management Systems</div>
+        </div>
+        <div class="course" onclick="location.href='course_info.html?course=5'">
+            <div class="course-title">Machine Learning Concepts</div>
+        </div>
+        <div class="course" onclick="location.href='course_info.html?course=6'">
+            <div class="course-title">Artificial Intelligence Basics</div>
+        </div>
+        <div class="course" onclick="location.href='course_info.html?course=7'">
+            <div class="course-title">Cybersecurity Essentials</div>
+        </div>
+    </div>
+
+    <!-- Buttons Section -->
+    <div class="manage-buttons">
+        <button onclick="location.href='view_courses.html'">View New Courses</button>
+        <button onclick="location.href='quizzes.html'">View Quizzes</button>
+        <button onclick="location.href='upload_assessment.html'">Upload Assessment</button>
+    </div>
+
+    <script>
+        // Logout function
+        function logout() {
+            // Clear session storage for username
+            sessionStorage.removeItem('username'); 
+            // Redirect to the main page
+            window.location.href = '/'; // Redirect to index.html
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #add8e6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Quiz</h1>
+    <form id="quizForm">
+        <label for="title">Quiz Title:</label>
+        <input type="text" id="title" required>
+        
+        <label for="link">Quiz Link:</label>
+        <input type="text" id="link" required>
+        
+        <button type="submit">Add Quiz</button>
+    </form>
+
+    <h2>Existing Quizzes</h2>
+    <div id="quizList"></div>
+
+    <script>
+        document.getElementById('quizForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const link = document.getElementById('link').value;
+
+            const response = await fetch('/add_quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, link }),
+            });
+
+            if (response.ok) {
+                alert('Quiz added successfully!');
+                fetchQuizzes(); // Refresh the quiz list
+            } else {
+                const errorData = await response.json();
+                alert(`Error adding quiz: ${errorData.message}`);
+            }
+        });
+
+        async function fetchQuizzes() {
+            const response = await fetch('/get_quizzes');
+            const quizzes = await response.json();
+            const quizList = document.getElementById('quizList');
+
+            // Clear existing quizzes
+            quizList.innerHTML = '';
+
+            quizzes.forEach(quiz => {
+                const quizDiv = document.createElement('div');
+                quizDiv.innerText = `${quiz.title} - ${quiz.link}`;
+                quizList.appendChild(quizDiv);
+            });
+        }
+
+        // Fetch quizzes on page load
+        fetchQuizzes();
+    </script>
+</body>
+</html>
